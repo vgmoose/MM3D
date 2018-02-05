@@ -2,6 +2,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include <iostream>
 #include <fstream>
 
 #include "gar.hpp"

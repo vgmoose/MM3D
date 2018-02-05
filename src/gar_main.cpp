@@ -33,17 +33,18 @@ int main(int argc, char ** argv) {
 
     // see if it's a gar or lzs file
 
-    char magic[4];
+    char magic[5];
     char arcrawdata[arcsize];
     std::vector<uint8_t> arcdata;
 
     archive.read(magic, 4);
+	magic[4] = '\0';
 
     archive.seekg(0);
     archive.read(arcrawdata, arcsize);
     arcdata = std::vector<uint8_t>(arcrawdata, arcrawdata + arcsize);
 
-    if (magic == std::string("GAR\x02")) {
+    if (0 == strcmp(magic, std::string("GAR\x02").c_str())) {
         gar_ext(arcdata, outdir);
     } else if (magic == std::string("LzS\x01")) {
         // a bit of trickery; thanks to the use of LZSS, the Gaiden Archive

@@ -33,18 +33,23 @@ int main(int argc, char ** argv) {
 
     // see if it's an LZS file
 
-    char magic[4];
+    char magic[5];
     char filerawdata[filesize];
     std::vector<uint8_t> filedata;
 
     infile.read(magic, 4);
+	magic[4] = '\0';
 
     infile.seekg(0);
     infile.read(filerawdata, filesize);
     infile.close();
     filedata = std::vector<uint8_t>(filerawdata, filerawdata + filesize);
 
-    if (magic == std::string("LzS\x01")) {
+const char* lzs_magic = std::string("LzS\x01").c_str();
+
+std::cout << "Magic: " << magic << "\nLZS Magic: " << lzs_magic << "\n";
+
+    if (strcmp(lzs_magic, magic) == 0) {
         filedata = lzs_dec(filedata);
         writeFile(outfname, "", (char*)filedata.data(), filedata.size());
     } else {
